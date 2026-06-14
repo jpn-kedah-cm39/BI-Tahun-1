@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>English Practice · Year 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --langit:#ffd9ec; --rumput:#e3f7ec; --putih:#ffffff;
+    --koral:#ec4d8a; --koral-gelap:#cf3a73;     /* rose = primary action */
+    --hijau:#3fa34d; --hijau-muda:#e6f6e8;
+    --amber:#ffc83d; --amber-gelap:#f0a800;
+    --merah:#e5564b; --merah-muda:#fdeceb;
+    --teks:#3a2233; --teks-lembut:#7a5c6e;
+    --garis:#f4dde9;
+    --bayang:0 8px 24px rgba(120,40,80,.10);
+    --bayang-besar:0 16px 40px rgba(120,40,80,.16);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;height:100%}
+  body{
+    font-family:'Nunito',system-ui,-apple-system,sans-serif;
+    color:var(--teks);
+    background:linear-gradient(180deg,var(--langit) 0%,#fff0f8 42%,var(--rumput) 100%);
+    background-attachment:fixed;
+    min-height:100%;
+    overflow-x:hidden;
+    -webkit-text-size-adjust:100%;
+  }
+  h1,h2,h3,.fred{font-family:'Fredoka',sans-serif}
+  .app{max-width:760px;margin:0 auto;padding:16px 16px 48px;position:relative;z-index:2}
+
+  /* sky decoration */
+  .matahari{position:fixed;top:-40px;right:-30px;width:150px;height:150px;border-radius:50%;
+    background:radial-gradient(circle at 40% 40%,#fff2b8,var(--amber));box-shadow:0 0 60px rgba(255,200,61,.55);z-index:1}
+  .awan{position:fixed;background:#fff;border-radius:50px;opacity:.85;z-index:1}
+  .awan::before,.awan::after{content:"";position:absolute;background:#fff;border-radius:50%}
+  .awan1{width:90px;height:30px;top:90px;left:18px}
+  .awan1::before{width:42px;height:42px;top:-20px;left:14px}
+  .awan1::after{width:30px;height:30px;top:-14px;left:48px}
+  .awan2{width:70px;height:24px;top:160px;right:40px}
+  .awan2::before{width:34px;height:34px;top:-16px;left:10px}
+  .awan2::after{width:24px;height:24px;top:-10px;left:38px}
+
+  /* main header */
+  header.utama{text-align:center;padding:14px 8px 6px}
+  .maskot{font-size:64px;display:inline-block;animation:terbang 3s ease-in-out infinite}
+  @keyframes terbang{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-10px) rotate(4deg)}}
+  header.utama h1{font-size:30px;margin:6px 0 2px;color:var(--teks);letter-spacing:.3px}
+  header.utama p{margin:0;color:var(--teks-lembut);font-weight:700;font-size:15px}
+
+  /* big buttons */
+  .btn{font-family:'Fredoka',sans-serif;border:none;border-radius:20px;cursor:pointer;
+    font-size:20px;font-weight:600;padding:18px 22px;width:100%;transition:transform .08s ease, box-shadow .15s ease;
+    box-shadow:var(--bayang);display:flex;align-items:center;justify-content:center;gap:10px}
+  .btn:active{transform:scale(.97)}
+  .btn-koral{background:var(--koral);color:#fff;box-shadow:0 6px 0 var(--koral-gelap),var(--bayang)}
+  .btn-koral:active{box-shadow:0 2px 0 var(--koral-gelap);transform:translateY(3px)}
+  .btn-amber{background:var(--amber);color:#6b4e00;box-shadow:0 6px 0 var(--amber-gelap),var(--bayang)}
+  .btn-amber:active{box-shadow:0 2px 0 var(--amber-gelap);transform:translateY(3px)}
+  .btn-hijau{background:var(--hijau);color:#fff;box-shadow:0 6px 0 #2f7e3a,var(--bayang);font-size:18px}
+  .btn-hijau:active{box-shadow:0 2px 0 #2f7e3a;transform:translateY(3px)}
+  .btn-putih{background:#fff;color:var(--teks)}
+  .btn-row{display:flex;gap:12px}
+  .btn-row .btn{width:auto;flex:1}
+
+  /* screens */
+  .skrin{display:none;animation:masuk .3s ease}
+  .skrin.aktif{display:block}
+  @keyframes masuk{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* menu */
+  .menu-aksi{display:flex;flex-direction:column;gap:14px;margin:22px 0 8px}
+  .tetapan-baris{display:flex;justify-content:center;margin-top:8px}
+  .togol{display:inline-flex;align-items:center;gap:8px;background:#fff;border:none;border-radius:16px;
+    padding:10px 16px;font-family:'Nunito';font-weight:800;font-size:15px;color:var(--teks);box-shadow:var(--bayang);cursor:pointer}
+
+  .tema{background:rgba(255,255,255,.55);border-radius:24px;padding:6px;margin:16px 0;box-shadow:var(--bayang)}
+  .tema-tajuk{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;border-radius:20px}
+  .tema-tajuk .em{font-size:32px}
+  .tema-tajuk .nm{flex:1}
+  .tema-tajuk .nm b{display:block;font-family:'Fredoka';font-size:19px;line-height:1.1}
+  .tema-tajuk .nm small{color:var(--teks-lembut);font-weight:700}
+  .tema-tajuk .chev{font-size:22px;color:var(--teks-lembut);transition:transform .2s}
+  .tema.buka .chev{transform:rotate(90deg)}
+  .tema-isi{display:none;padding:0 8px 8px}
+  .tema.buka .tema-isi{display:block}
+
+  .unit-nama{font-family:'Fredoka';font-weight:600;font-size:15px;color:var(--teks-lembut);
+    margin:12px 6px 6px;text-transform:none}
+  .latih{background:#fff;border-radius:18px;padding:14px 14px;margin:8px 0;display:flex;align-items:center;gap:12px;
+    box-shadow:var(--bayang);border:3px solid transparent;transition:border-color .15s, transform .08s}
+  .latih:active{transform:scale(.99)}
+  .latih .ik{font-size:30px;width:48px;height:48px;display:flex;align-items:center;justify-content:center;
+    background:#fde4ee;border-radius:14px;flex:0 0 auto}
+  .latih .info{flex:1;min-width:0}
+  .latih .info b{display:block;font-family:'Fredoka';font-size:17px}
+  .latih .info small{color:var(--teks-lembut);font-weight:700}
+  .latih .main{background:var(--koral);color:#fff;border:none;border-radius:14px;font-family:'Fredoka';
+    font-weight:600;font-size:16px;padding:12px 18px;cursor:pointer;flex:0 0 auto}
+  .latih .main:active{transform:scale(.95)}
+  .latih .tik{display:none;width:34px;height:34px;border-radius:50%;border:3px solid var(--garis);flex:0 0 auto;
+    align-items:center;justify-content:center;font-size:20px;color:#fff;cursor:pointer}
+  body.multi .latih .main{display:none}
+  body.multi .latih .tik{display:flex}
+  .latih.pilih{border-color:var(--koral)}
+  .latih.pilih .tik{background:var(--koral);border-color:var(--koral)}
+  .latih.pilih .ik{background:#fbd0e2}
+
+  /* bottom bar (multi-select) */
+  .bar-bawah{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg,rgba(227,247,236,0),#e3f7ec 40%);display:none}
+  body.multi .bar-bawah.ada{display:block}
+  .bar-bawah .inner{max-width:760px;margin:0 auto}
+
+  /* exercise screen */
+  .top-latih{display:flex;align-items:center;gap:12px;margin:4px 0 14px}
+  .balik{background:#fff;border:none;border-radius:14px;width:48px;height:48px;font-size:22px;cursor:pointer;box-shadow:var(--bayang);flex:0 0 auto}
+  .progres{flex:1;height:18px;background:#fff;border-radius:20px;overflow:hidden;box-shadow:inset 0 2px 4px rgba(0,0,0,.06)}
+  .progres > div{height:100%;background:linear-gradient(90deg,var(--amber),var(--koral));width:0;border-radius:20px;transition:width .35s ease}
+  .bintang-kira{display:flex;align-items:center;gap:4px;font-family:'Fredoka';font-weight:700;font-size:18px;color:var(--amber-gelap)}
+
+  .kad{background:#fff;border-radius:28px;padding:22px 18px 24px;box-shadow:var(--bayang-besar);text-align:center}
+  .arahan{color:var(--teks-lembut);font-weight:800;font-size:15px;margin:0 0 6px;text-transform:uppercase;letter-spacing:.5px}
+  .petikan{background:#fdf3f8;border-radius:18px;padding:14px 16px;text-align:left;font-size:17px;line-height:1.5;
+    font-weight:700;color:var(--teks);margin:0 auto 16px;max-width:560px}
+  .papar-em{font-size:84px;line-height:1;margin:4px 0 10px}
+  .papar-kata{font-family:'Fredoka';font-size:46px;font-weight:600;letter-spacing:2px;margin:6px 0 14px;color:var(--teks)}
+  .papar-kata .kosong{color:var(--koral);background:var(--merah-muda);border-radius:10px;padding:0 8px;margin:0 2px}
+  .soalan-teks{font-family:'Fredoka';font-size:24px;font-weight:600;line-height:1.25;margin:4px 0 18px;color:var(--teks)}
+
+  .pilihan{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .pilihan.satu-lajur{grid-template-columns:1fr}
+  .opsi{background:#fff;border:3px solid var(--garis);border-radius:20px;padding:20px 14px;
+    font-family:'Fredoka';font-size:24px;font-weight:600;color:var(--teks);cursor:pointer;
+    min-height:72px;display:flex;align-items:center;justify-content:center;gap:8px;
+    transition:transform .08s, border-color .12s, background .12s;box-shadow:var(--bayang)}
+  .opsi:active{transform:scale(.97)}
+  .opsi:focus-visible{outline:4px solid var(--amber);outline-offset:2px}
+  .opsi.betul{background:var(--hijau-muda);border-color:var(--hijau);color:var(--hijau)}
+  .opsi.salah{background:var(--merah-muda);border-color:var(--merah);color:var(--merah)}
+  .opsi.kunci{background:var(--hijau-muda);border-color:var(--hijau);color:var(--hijau);animation:degup .5s}
+  @keyframes degup{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+  .opsi[disabled]{cursor:default}
+
+  /* feedback */
+  .mesej{margin-top:18px;min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+  .mesej .raut{font-size:46px;display:none}
+  .mesej .kata{font-family:'Fredoka';font-size:22px;font-weight:600;display:none}
+  .mesej.ok .raut.suka,.mesej.ok .kata.suka{display:block;animation:pop .4s}
+  .mesej.no .raut.sedih,.mesej.no .kata.sedih{display:block}
+  @keyframes pop{0%{transform:scale(0)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+  .btn-seterus{display:none;margin-top:16px}
+  .mesej.ok ~ .btn-seterus,.mesej.no ~ .btn-seterus{display:flex}
+
+  /* ---- Match the pictures ---- */
+  .padan-arahan,.susun-nota{color:var(--teks-lembut);font-weight:800;font-size:14px;margin:0 0 12px}
+  .padan-grid{display:flex;gap:14px;justify-content:center}
+  .padan-col{display:flex;flex-direction:column;gap:10px;flex:1;max-width:46%}
+  .padan-item{background:#fff;border:3px solid var(--garis);border-radius:18px;min-height:62px;
+    font-family:'Fredoka';font-size:20px;font-weight:600;color:var(--teks);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;padding:8px;box-shadow:var(--bayang);transition:transform .08s,border-color .12s,background .12s}
+  .padan-item:active{transform:scale(.97)}
+  .padan-em{font-size:40px;line-height:1}
+  .padan-item.pilih{border-color:var(--amber);background:#fff8e3}
+  .padan-item.lock{border-color:var(--hijau);background:var(--hijau-muda);color:var(--hijau);cursor:default}
+  .padan-item.silap{border-color:var(--merah);background:var(--merah-muda);animation:goyang .4s}
+  .goyang{animation:goyang .4s}
+  @keyframes goyang{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+  /* ---- Make / Build a sentence ---- */
+  .susun-jwp{min-height:60px;border:3px dashed var(--amber);border-radius:18px;background:#fffdf5;
+    padding:10px;margin:0 0 14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+  .susun-jwp.betul{border-color:var(--hijau);border-style:solid;background:var(--hijau-muda)}
+  .susun-jwp.salah{border-color:var(--merah);border-style:solid;background:var(--merah-muda)}
+  .susun-hint{color:var(--teks-lembut);font-weight:700;font-size:14px}
+  .susun-bank{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:8px}
+  .tile{background:#fff;border:3px solid var(--garis);border-radius:14px;font-family:'Fredoka';
+    font-size:20px;font-weight:600;color:var(--teks);padding:12px 16px;cursor:pointer;box-shadow:var(--bayang);transition:transform .08s,opacity .12s}
+  .tile:active{transform:scale(.95)}
+  .tile.guna{opacity:.25;pointer-events:none}
+  .tile-jwp{border-color:var(--amber);background:#fff8e3}
+  .susun-nota{min-height:18px;color:var(--merah);opacity:0;transition:opacity .2s}
+  .susun-nota.lihat{opacity:1}
+  .susun-semak{margin-top:4px}
+
+  /* finish screen */
+  .tamat{text-align:center}
+  .tamat .raut-besar{font-size:96px;animation:terbang 2.4s ease-in-out infinite}
+  .tamat h2{font-size:30px;margin:6px 0}
+  .balang{margin:18px auto;max-width:300px;background:#fff;border-radius:24px;padding:20px;box-shadow:var(--bayang)}
+  .balang .skor{font-family:'Fredoka';font-size:54px;font-weight:700;color:var(--koral);line-height:1}
+  .balang .skor small{font-size:24px;color:var(--teks-lembut)}
+  .bintang-baris{font-size:40px;letter-spacing:4px;margin-top:8px}
+  .tamat .ucap{font-weight:800;color:var(--teks-lembut);font-size:17px;margin:4px 0 22px}
+  .terbaik{display:inline-block;background:#fff;border-radius:14px;padding:8px 16px;margin:6px auto 2px;
+    font-family:'Fredoka';font-weight:600;font-size:15px;color:var(--amber-gelap);box-shadow:var(--bayang)}
+  .terbaik .baharu{color:var(--hijau);margin-left:6px}
+
+  footer{text-align:center;margin-top:22px;font-size:11px;color:var(--teks-lembut);font-weight:700;line-height:1.6}
+
+  .nota{background:rgba(255,255,255,.6);border-radius:18px;padding:14px 16px;margin-top:18px;font-size:13.5px;
+    color:var(--teks-lembut);font-weight:700;line-height:1.5}
+  .jejak{display:inline-block;background:#fff;border-radius:10px;padding:2px 8px;margin-left:6px;font-size:13px;color:var(--amber-gelap);font-weight:800}
+
+  @media (max-width:420px){
+    header.utama h1{font-size:26px}
+    .papar-em{font-size:68px}
+    .papar-kata{font-size:38px}
+    .soalan-teks{font-size:21px}
+    .opsi{font-size:21px;min-height:64px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="matahari"></div>
+<div class="awan awan1"></div>
+<div class="awan awan2"></div>
+
+<div class="app">
+
+  <!-- ================= START SCREEN ================= -->
+  <section id="skrinMula" class="skrin aktif">
+    <header class="utama">
+      <div class="maskot">🧕</div>
+      <h1>English · Year 1</h1>
+      <p>Let's learn English with Teacher Azie!</p>
+    </header>
+
+    <div class="menu-aksi">
+      <button class="btn btn-koral" onclick="bukaPilih()">📚 Choose Exercise</button>
+      <button class="btn btn-hijau" onclick="mulaModul()">📋 Step-by-Step Revision · Module 1 (10 random sets)</button>
+      <button class="btn btn-amber" onclick="latihanPantas()">⚡ Quick Practice (Mixed)</button>
+    </div>
+    <div class="tetapan-baris">
+      <button class="togol" id="togolBunyi" onclick="togolBunyi()">🔊 Sound: On</button>
+    </div>
+
+    <div class="nota">
+      <b>👋 For parents:</b> <b>Step-by-Step Revision (Modul Selangkah 1)</b> has <b>10 question sets</b> chosen at <b>random</b> each time, covering <b>Friends · At School · Let's Play!</b> — each set has 6 parts: Vocabulary, Match the Pictures, Make a Sentence, Missing Letters, Fill in the Blank and Build a Sentence.
+      <b>Choose Exercise</b> lets you pick by theme/unit; turn on <b>Pick Many</b> to combine a few exercises.
+      Everything is checked automatically — your child only needs to <b>tap</b>, no typing.
+    </div>
+  </section>
+
+  <!-- ================= CHOOSE SCREEN ================= -->
+  <section id="skrinPilih" class="skrin">
+    <div class="top-latih">
+      <button class="balik" onclick="keMula()">⬅️</button>
+      <h2 style="margin:0;font-size:22px;flex:1">Choose Exercise</h2>
+      <button class="togol" id="togolMulti" onclick="togolMulti()">➕ Pick Many</button>
+    </div>
+    <div id="senaraiTema"></div>
+  </section>
+
+  <!-- ================= EXERCISE SCREEN ================= -->
+  <section id="skrinLatihan" class="skrin">
+    <div class="top-latih">
+      <button class="balik" onclick="tanyaBerhenti()">⬅️</button>
+      <div class="progres"><div id="progresBar"></div></div>
+      <button class="balik" id="btnBunyiLatih" onclick="togolBunyi()" title="Sound on/off">🔊</button>
+      <div class="bintang-kira"><span>⭐</span><span id="kiraBintang">0</span></div>
+    </div>
+    <div class="kad">
+      <p class="arahan" id="arahan"></p>
+      <div id="petikanKotak"></div>
+      <div id="paparan"></div>
+      <div class="pilihan" id="pilihan"></div>
+      <div class="mesej" id="mesej">
+        <div class="raut suka">🎉</div><div class="raut sedih">🤔</div>
+        <div class="kata suka"></div><div class="kata sedih"></div>
+      </div>
+      <button class="btn btn-koral btn-seterus" id="btnSeterus" onclick="soalanSeterus()">Next ➡️</button>
+    </div>
+  </section>
+
+  <!-- ================= FINISH SCREEN ================= -->
+  <section id="skrinTamat" class="skrin tamat">
+    <div class="raut-besar" id="rautTamat">🌟</div>
+    <h2 id="tajukTamat">Well done!</h2>
+    <div class="balang">
+      <div class="skor"><span id="skorBetul">0</span><small>/<span id="skorJumlah">0</span></small></div>
+      <div class="bintang-baris" id="bintangBaris"></div>
+    </div>
+    <div class="terbaik" id="hasilTerbaik" style="display:none"></div>
+    <p class="ucap" id="ucapTamat"></p>
+    <div class="btn-row">
+      <button class="btn btn-amber" onclick="ulangLatihan()">🔁 Try Again</button>
+      <button class="btn btn-koral" onclick="keMula()">🏠 Menu</button>
+    </div>
+  </section>
+
+  <footer>
+    Dibangunkan oleh Hafiz Husaini Harimanto<br>
+    Berdasarkan Buku Teks &amp; DSKP KSSR Bahasa Inggeris Tahun 1
+  </footer>
+
+</div>
+
+<!-- bottom bar for pick-many mode -->
+<div class="bar-bawah" id="barBawah">
+  <div class="inner">
+    <button class="btn btn-koral" id="btnMulaPilihan" onclick="mulaPilihan()">▶️ Start (<span id="bilPilih">0</span> exercises)</button>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   ENGLISH YEAR 1 — based on DSKP KSSR (Superminds 1, Intro–Unit 4)
+   Question kinds: 'teks' (text MCQ), 'em' (emoji + question),
+   'kata' (word with one blank), 'padan' (match), 'susun' (arrange).
+   All auto-checked; pupils only tap.
+   Content is halal & age-appropriate (no pig/alcohol/gambling imagery).
+   ========================================================= */
+const DATA = [
+ { id:'t1', nama:'World of Self, Family & Friends', emoji:'👋',
+   units:[
+    { nama:'Introduction · Friends', latihan:[
+      { id:'t1u1l1', tajuk:'Greetings & Names', ikon:'👋',
+        arahan:'Choose the correct answer', soalan:[
+        {kind:'teks', teks:'When you meet a friend, you say?', pilihan:["Hello!","Goodbye!","Thank you!"], jwp:0},
+        {kind:'teks', teks:'"What is your name?" You answer?', pilihan:["My name is Sara.","I am seven.","It is red."], jwp:0},
+        {kind:'teks', teks:'"How old are you?" You answer?', pilihan:["I am seven.","My name is Ben.","It is blue."], jwp:0},
+        {kind:'teks', teks:'When you go home, you say?', pilihan:["Goodbye!","Good morning!","Watch out!"], jwp:0},
+        {kind:'teks', teks:'Your friend helps you. You say?', pilihan:["Thank you!","Sit down!","Be quiet!"], jwp:0},
+      ]},
+      { id:'t1u1l2', tajuk:'Numbers 1 to 10', ikon:'🔢',
+        arahan:'How many? / Choose the answer', soalan:[
+        {kind:'em', em:'⭐⭐⭐', teks:'How many stars?', pilihan:["3","2","4"], jwp:0},
+        {kind:'em', em:'🍎🍎🍎🍎🍎', teks:'How many apples?', pilihan:["5","6","4"], jwp:0},
+        {kind:'teks', teks:'Which number is "seven"?', pilihan:["7","9","5"], jwp:0},
+        {kind:'em', em:'🎈🎈🎈🎈🎈🎈🎈🎈', teks:'How many balloons?', pilihan:["8","9","7"], jwp:0},
+        {kind:'teks', teks:'What comes after nine?', pilihan:["ten","eight","six"], jwp:0},
+      ]},
+      { id:'t1u1l3', tajuk:'Colours', ikon:'🎨',
+        arahan:'What colour is this?', soalan:[
+        {kind:'em', em:'🔴', teks:'What colour is this?', pilihan:["red","blue","green"], jwp:0},
+        {kind:'em', em:'🟡', teks:'What colour is this?', pilihan:["yellow","orange","purple"], jwp:0},
+        {kind:'em', em:'🟢', teks:'What colour is this?', pilihan:["green","blue","red"], jwp:0},
+        {kind:'em', em:'🟣', teks:'What colour is this?', pilihan:["purple","pink","grey"], jwp:0},
+        {kind:'em', em:'🔵', teks:'What colour is this?', pilihan:["blue","green","yellow"], jwp:0},
+      ]},
+    ]},
+    { nama:'Unit 1 · At School', latihan:[
+      { id:'t1u2l1', tajuk:'Classroom Objects', ikon:'✏️',
+        arahan:'What is this?', soalan:[
+        {kind:'em', em:'✏️', teks:'What is this?', pilihan:["a pencil","a pen","a book"], jwp:0},
+        {kind:'em', em:'📒', teks:'What is this?', pilihan:["a book","a bag","a ruler"], jwp:0},
+        {kind:'em', em:'📏', teks:'What is this?', pilihan:["a ruler","a pencil","a desk"], jwp:0},
+        {kind:'em', em:'🎒', teks:'What is this?', pilihan:["a bag","a pen","a book"], jwp:0},
+        {kind:'em', em:'🖊️', teks:'What is this?', pilihan:["a pen","a ruler","a desk"], jwp:0},
+      ]},
+      { id:'t1u2l2', tajuk:'Is it a...? Yes / No', ikon:'❓',
+        arahan:'Look and answer Yes or No', soalan:[
+        {kind:'em', em:'✏️', teks:'Is it a pen?', pilihan:["No, it isn\'t.","Yes, it is."], jwp:0},
+        {kind:'em', em:'📕', teks:'Is it a book?', pilihan:["Yes, it is.","No, it isn\'t."], jwp:0},
+        {kind:'em', em:'📏', teks:'Is it a ruler?', pilihan:["Yes, it is.","No, it isn\'t."], jwp:0},
+        {kind:'em', em:'🎒', teks:'Is it a pencil?', pilihan:["No, it isn\'t.","Yes, it is."], jwp:0},
+        {kind:'em', em:'🖊️', teks:'Is it a pen?', pilihan:["Yes, it is.","No, it isn\'t."], jwp:0},
+      ]},
+      { id:'t1u2l3', tajuk:'Classroom Instructions', ikon:'🙋',
+        arahan:'What should you do?', soalan:[
+        {kind:'teks', teks:'"Sit at your desk, please." You should?', pilihan:["sit down","stand up","run"], jwp:0},
+        {kind:'teks', teks:'"Open your book, please." You should?', pilihan:["open the book","close the book","eat"], jwp:0},
+        {kind:'teks', teks:'"Pass me a ruler, please." What should you do?', pilihan:["Hand it to the teacher","Run outside","Go to sleep"], jwp:0},
+        {kind:'teks', teks:'"Put away your book." You should?', pilihan:["keep the book","throw the book","sing"], jwp:0},
+        {kind:'teks', teks:'"Watch out!" means?', pilihan:["Be careful!","Go to sleep!","Sing a song!"], jwp:0},
+      ]},
+    ]},
+   ]},
+
+ { id:'t2', nama:'World of Stories', emoji:'🧸',
+   units:[
+    { nama:'Unit 2 · Let\'s Play', latihan:[
+      { id:'t2u1l1', tajuk:'Toys', ikon:'🪁',
+        arahan:'What toy is this?', soalan:[
+        {kind:'em', em:'🪁', teks:'What toy is this?', pilihan:["a kite","a ball","a doll"], jwp:0},
+        {kind:'em', em:'⚽', teks:'What toy is this?', pilihan:["a ball","a car","a kite"], jwp:0},
+        {kind:'em', em:'🚗', teks:'What toy is this?', pilihan:["a car","a train","a bike"], jwp:0},
+        {kind:'em', em:'🚂', teks:'What toy is this?', pilihan:["a train","a plane","a car"], jwp:0},
+        {kind:'em', em:'✈️', teks:'What toy is this?', pilihan:["a plane","a kite","a ball"], jwp:0},
+      ]},
+      { id:'t2u1l2', tajuk:'Opposites (Adjectives)', ikon:'🔁',
+        arahan:'Choose the opposite word', soalan:[
+        {kind:'teks', teks:'The opposite of "big" is?', pilihan:["small","tall","new"], jwp:0},
+        {kind:'teks', teks:'The opposite of "old" is?', pilihan:["new","long","ugly"], jwp:0},
+        {kind:'teks', teks:'The opposite of "long" is?', pilihan:["short","small","big"], jwp:0},
+        {kind:'teks', teks:'The opposite of "beautiful" is?', pilihan:["ugly","clever","great"], jwp:0},
+        {kind:'em', em:'🐘', teks:'An elephant is very?', pilihan:["big","small","short"], jwp:0},
+      ]},
+      { id:'t2u1l3', tajuk:'Shapes', ikon:'🔺',
+        arahan:'What shape is this?', soalan:[
+        {kind:'em', em:'🔺', teks:'What shape is this?', pilihan:["a triangle","a circle","a square"], jwp:0},
+        {kind:'em', em:'🟦', teks:'What shape is this?', pilihan:["a square","a circle","a triangle"], jwp:0},
+        {kind:'em', em:'🔵', teks:'What shape is this?', pilihan:["a circle","a square","a diamond"], jwp:0},
+        {kind:'em', em:'🔷', teks:'What shape is this?', pilihan:["a diamond","a circle","a triangle"], jwp:0},
+        {kind:'teks', teks:'A shape with 3 sides is a?', pilihan:["triangle","square","circle"], jwp:0},
+      ]},
+      { id:'t2u1l4', tajuk:'His or Her?', ikon:'👦',
+        arahan:'Choose His, Her, He or She', soalan:[
+        {kind:'teks', teks:'Ben is a boy. ___ name is Ben.', pilihan:["His","Her","Its"], jwp:0},
+        {kind:'teks', teks:'Sue is a girl. ___ name is Sue.', pilihan:["Her","His","My"], jwp:0},
+        {kind:'teks', teks:'This is a boy. ___ favourite toy is a car.', pilihan:["His","Her"], jwp:0},
+        {kind:'teks', teks:'This is a girl. ___ favourite toy is a doll.', pilihan:["Her","His"], jwp:0},
+        {kind:'teks', teks:'Ben is seven. ___ is happy.', pilihan:["He","She","It"], jwp:0},
+      ]},
+    ]},
+   ]},
+
+ { id:'t3', nama:'World of Knowledge', emoji:'🌍',
+   units:[
+    { nama:'Unit 3 · Pet Show', latihan:[
+      { id:'t3u1l1', tajuk:'Animals', ikon:'🐾',
+        arahan:'What animal is this?', soalan:[
+        {kind:'em', em:'🐶', teks:'What animal is this?', pilihan:["a dog","a cat","a frog"], jwp:0},
+        {kind:'em', em:'🐱', teks:'What animal is this?', pilihan:["a cat","a dog","a duck"], jwp:0},
+        {kind:'em', em:'🐸', teks:'What animal is this?', pilihan:["a frog","a fish","a bird"], jwp:0},
+        {kind:'em', em:'🦆', teks:'What animal is this?', pilihan:["a duck","a dog","a frog"], jwp:0},
+        {kind:'em', em:'🐍', teks:'What animal is this?', pilihan:["a snake","a lizard","a worm"], jwp:0},
+      ]},
+      { id:'t3u1l2', tajuk:'Where is it? (in / on / under)', ikon:'📦',
+        arahan:'Choose in, on or under', soalan:[
+        {kind:'teks', teks:'The lizard is inside the bag. The lizard is ___ the bag.', pilihan:["in","on","under"], jwp:0},
+        {kind:'teks', teks:'The cat is on top of the desk. The cat is ___ the desk.', pilihan:["on","in","under"], jwp:0},
+        {kind:'teks', teks:'The ball is below the chair. The ball is ___ the chair.', pilihan:["under","on","in"], jwp:0},
+        {kind:'teks', teks:'The pen is inside the box. The pen is ___ the box.', pilihan:["in","under","on"], jwp:0},
+        {kind:'teks', teks:'The book is on top of the bag. The book is ___ the bag.', pilihan:["on","in","under"], jwp:0},
+      ]},
+      { id:'t3u1l3', tajuk:'I like / I don\'t like', ikon:'👍',
+        arahan:'Look at 👍 or 👎 and choose', soalan:[
+        {kind:'teks', teks:'👍 Dogs are nice. I ___ dogs.', pilihan:["like","don\'t like"], jwp:0},
+        {kind:'teks', teks:'👎 Spiders are scary. I ___ spiders.', pilihan:["don\'t like","like"], jwp:0},
+        {kind:'teks', teks:'👍 Cats are cute. I ___ cats.', pilihan:["like","don\'t like"], jwp:0},
+        {kind:'teks', teks:'👎 Snakes are scary. I ___ snakes.', pilihan:["don\'t like","like"], jwp:0},
+        {kind:'teks', teks:'👍 Frogs are fun. I ___ frogs.', pilihan:["like","don\'t like"], jwp:0},
+      ]},
+    ]},
+    { nama:'Unit 4 · Lunchtime', latihan:[
+      { id:'t3u2l1', tajuk:'Food', ikon:'🍎',
+        arahan:'What food is this?', soalan:[
+        {kind:'em', em:'🍎', teks:'What food is this?', pilihan:["an apple","a banana","an orange"], jwp:0},
+        {kind:'em', em:'🍌', teks:'What food is this?', pilihan:["a banana","an apple","a pear"], jwp:0},
+        {kind:'em', em:'🥪', teks:'What food is this?', pilihan:["a sandwich","a pizza","a cake"], jwp:0},
+        {kind:'em', em:'🥕', teks:'What food is this?', pilihan:["a carrot","a banana","a pea"], jwp:0},
+        {kind:'em', em:'🍰', teks:'What food is this?', pilihan:["a cake","a pizza","an apple"], jwp:0},
+      ]},
+      { id:'t3u2l2', tajuk:'Numbers 11 to 20', ikon:'🔢',
+        arahan:'Choose the answer', soalan:[
+        {kind:'teks', teks:'Which number is "twelve"?', pilihan:["12","20","2"], jwp:0},
+        {kind:'teks', teks:'Which number is "fifteen"?', pilihan:["15","50","5"], jwp:0},
+        {kind:'teks', teks:'What comes after eleven?', pilihan:["twelve","ten","twenty"], jwp:0},
+        {kind:'teks', teks:'Which number is "twenty"?', pilihan:["20","12","2"], jwp:0},
+        {kind:'em', em:'🍓🍓🍓🍓🍓🍓🍓🍓🍓🍓🍓🍓🍓', teks:'How many strawberries?', pilihan:["13","14","12"], jwp:0},
+      ]},
+      { id:'t3u2l3', tajuk:'Have got / Haven\'t got', ikon:'🍽️',
+        arahan:'Choose the correct answer', soalan:[
+        {kind:'teks', teks:'👍 I have a sandwich. I ___ a sandwich.', pilihan:["have got","haven\'t got"], jwp:0},
+        {kind:'teks', teks:'There is no milk. We ___ any milk.', pilihan:["haven\'t got","have got"], jwp:0},
+        {kind:'teks', teks:'🍎👍 Have we got any apples? Yes, ___.', pilihan:["we have","we haven\'t"], jwp:0},
+        {kind:'teks', teks:'🍰👎 Have we got any cake? No, ___.', pilihan:["we haven\'t","we have"], jwp:0},
+        {kind:'teks', teks:'🍊👍 I have one orange. I ___ an orange.', pilihan:["have got","haven\'t got"], jwp:0},
+      ]},
+    ]},
+   ]},
+
+ { id:'t4', nama:'Letters & Sounds (Phonics)', emoji:'🔤',
+   units:[
+    { nama:'The Alphabet', latihan:[
+      { id:'t4u1l1', tajuk:'Small Letters', ikon:'🔡',
+        arahan:'Choose the correct small letter', soalan:[
+        {kind:'teks', teks:'The small letter of  A  is?', pilihan:["a","o","e","u"], jwp:0},
+        {kind:'teks', teks:'The small letter of  B  is?', pilihan:["b","d","p","q"], jwp:0},
+        {kind:'teks', teks:'The small letter of  M  is?', pilihan:["m","n","w","u"], jwp:0},
+        {kind:'teks', teks:'The small letter of  R  is?', pilihan:["r","n","h","k"], jwp:0},
+        {kind:'teks', teks:'The small letter of  E  is?', pilihan:["e","a","o","i"], jwp:0},
+      ]},
+      { id:'t4u1l2', tajuk:'Capital Letters', ikon:'🔠',
+        arahan:'Choose the correct answer', soalan:[
+        {kind:'teks', teks:'The capital letter of  c  is?', pilihan:["C","G","O","Q"], jwp:0},
+        {kind:'teks', teks:'The capital letter of  g  is?', pilihan:["G","C","Q","O"], jwp:0},
+        {kind:'teks', teks:'The capital letter of  t  is?', pilihan:["T","F","L","I"], jwp:0},
+        {kind:'teks', teks:'Names start with a ___ letter.', pilihan:["capital","small"], jwp:0},
+        {kind:'teks', teks:'Which one is a capital letter?', pilihan:["D","d","b","p"], jwp:0},
+      ]},
+    ]},
+    { nama:'First Sounds & CVC Words', latihan:[
+      { id:'t4u2l1', tajuk:'Beginning Sound', ikon:'🅰️',
+        arahan:'What sound does it start with?', soalan:[
+        {kind:'em', em:'🍎', teks:'"apple" starts with?', pilihan:["a","e","o"], jwp:0},
+        {kind:'em', em:'🐱', teks:'"cat" starts with?', pilihan:["c","s","t"], jwp:0},
+        {kind:'em', em:'🐶', teks:'"dog" starts with?', pilihan:["d","b","t"], jwp:0},
+        {kind:'em', em:'🐟', teks:'"fish" starts with?', pilihan:["f","v","s"], jwp:0},
+        {kind:'em', em:'🐝', teks:'"bee" starts with?', pilihan:["b","d","p"], jwp:0},
+      ]},
+      { id:'t4u2l2', tajuk:'Missing Letter', ikon:'🔤',
+        arahan:'Tap the missing letter', soalan:[
+        {kind:'kata', kata:'c_t', em:'🐱', pilihan:["a","o","e","u"], jwp:0},
+        {kind:'kata', kata:'d_g', em:'🐶', pilihan:["o","a","u","e"], jwp:0},
+        {kind:'kata', kata:'p_n', em:'🖊️', pilihan:["e","a","i","o"], jwp:0},
+        {kind:'kata', kata:'b_g', em:'🎒', pilihan:["a","o","u","e"], jwp:0},
+        {kind:'kata', kata:'s_n', em:'☀️', pilihan:["u","a","o","e"], jwp:0},
+      ]},
+    ]},
+   ]},
+];
+
+/* =========================================================
+   MODUL_SETS — 10 sets, each with 6 parts (~19 questions/set)
+   Parts: Vocabulary · Match the Pictures · Make a Sentence ·
+          Missing Letters · Fill in the Blank · Build a Sentence
+   ========================================================= */
+const MODUL_SETS = [
+ /* MODUL SELANGKAH 1 — Topics: 1) Friends  2) At School  3) Let's Play! */
+ /* ---------------- SET 1 ---------------- */
+ [
+  { bahagian:"Vocabulary", soalan:[
+    {kind:"em", em:"🪁", teks:"What toy is this?", pilihan:["a kite","a ball","a car"], jwp:0},
+    {kind:"em", em:"✏️", teks:"What is this?", pilihan:["a pencil","a pen","a book"], jwp:0},
+    {kind:"em", em:"🔴", teks:"What colour is this?", pilihan:["red","blue","green"], jwp:0},
+    {kind:"teks", teks:'Which number is "seven"?', pilihan:["7","9","5"], jwp:0},
+    {kind:"em", em:"🔺", teks:"What shape is this?", pilihan:["a triangle","a circle","a square"], jwp:0},
+  ]},
+  { bahagian:"Match the Pictures", soalan:[
+    {kind:"padan", pairs:[{gambar:"🪁",j:"kite"},{gambar:"⚽",j:"ball"},{gambar:"🚗",j:"car"},{gambar:"🚂",j:"train"}]},
+    {kind:"padan", pairs:[{gambar:"🔴",j:"red"},{gambar:"🟡",j:"yellow"},{gambar:"🟢",j:"green"},{gambar:"🔵",j:"blue"}]},
+  ]},
+  { bahagian:"Make a Sentence", soalan:[
+    {kind:"susun", kata:["I","like","cats"]},
+    {kind:"susun", kata:["This","is","my","pen"]},
+    {kind:"susun", kata:["He","is","seven"]},
+  ]},
+  { bahagian:"Missing Letters", soalan:[
+    {kind:"kata", kata:"c_t", em:"🐱", pilihan:["a","o","e","u"], jwp:0},
+    {kind:"kata", kata:"p_n", em:"🖊️", pilihan:["e","a","i","o"], jwp:0},
+    {kind:"kata", kata:"b_g", em:"🎒", pilihan:["a","o","u","e"], jwp:0},
+  ]},
+  { bahagian:"Fill in the Blank", soalan:[
+    {kind:"teks", teks:"Ben is a boy. ___ name is Ben.", pilihan:["His","Her"], jwp:0},
+    {kind:"teks", teks:'The opposite of "big" is ___.', pilihan:["small","tall"], jwp:0},
+    {kind:"teks", teks:"When you meet a friend, say ___.", pilihan:["Hello","Goodbye"], jwp:0},
+  ]},
+  { bahagian:"Build a Sentence", soalan:[
+    {kind:"susun", em:"🪁", teks:"Build a sentence about the picture:", kata:["I","have","a","kite"]},
+    {kind:"susun", em:"⚽", teks:"Build a sentence about the picture:", kata:["The","ball","is","big"]},
+    {kind:"susun", em:"🖊️", teks:"Build a sentence about the picture:", kata:["I","have","a","pen"]},
+  ]},
+ ],
+ /* ---------------- SET 2 ---------------- */
+ [
+  { bahagian:"Vocabulary", soalan:[
+    {kind:"em", em:"✏️", teks:"What is this?", pilihan:["a pencil","a pen","a book"], jwp:0},
+    {kind:"em", em:"🖊️", teks:"What is this?", pilihan:["a pen","a ruler","a desk"], jwp:0},
+    {kind:"em", em:"📒", teks:"What is this?", pilihan:["a notebook","a bag","a ruler"], jwp:0},
+    {kind:"em", em:"🎒", teks:"What is this?", pilihan:["a bag","a book","a pen"], jwp:0},
+    {kind:"em", em:"📏", teks:"What is this?", pilihan:["a ruler","a pencil","a desk"], jwp:0},
+  ]},
+  { bahagian:"Match the Pictures", soalan:[
+    {kind:"padan", pairs:[{gambar:"✏️",j:"pencil"},{gambar:"🖊️",j:"pen"},{gambar:"📕",j:"book"},{gambar:"🎒",j:"bag"}]},
+    {kind:"padan", pairs:[{gambar:"✏️",j:"pencil"},{gambar:"📏",j:"ruler"},{gambar:"📒",j:"notebook"},{gambar:"🎒",j:"bag"}]},
+  ]},
+  { bahagian:"Make a Sentence", soalan:[
+    {kind:"susun", kata:["This","is","my","bag"]},
+    {kind:"susun", kata:["My","pen","is","blue"]},
+    {kind:"susun", kata:["I","can","sing"]},
+  ]},
+  { bahagian:"Missing Letters", soalan:[
+    {kind:"kata", kata:"p_n", em:"🖊️", pilihan:["e","a","i","o"], jwp:0},
+    {kind:"kata", kata:"b_g", em:"🎒", pilihan:["a","o","u","e"], jwp:0},
+    {kind:"kata", kata:"d_ll", em:"🧸", pilihan:["o","a","u","e"], jwp:0},
+  ]},
+  { bahagian:"Fill in the Blank", soalan:[
+    {kind:"em", em:"🖊️", teks:"Is it a pen? Yes, ___.", pilihan:["it is","it isn't"], jwp:0},
+    {kind:"teks", teks:'"Watch out!" means ___.', pilihan:["Be careful","Go to sleep"], jwp:0},
+    {kind:"teks", teks:"When someone helps you, say ___.", pilihan:["Thank you","Sorry"], jwp:0},
+  ]},
+  { bahagian:"Build a Sentence", soalan:[
+    {kind:"susun", em:"✏️", teks:"Build a sentence about the picture:", kata:["This","is","my","pencil"]},
+    {kind:"susun", em:"🎒", teks:"Build a sentence about the picture:", kata:["My","bag","is","red"]},
+    {kind:"susun", em:"🖊️", teks:"Build a sentence about the picture:", kata:["I","have","a","pen"]},
+  ]},
+ ],
+ /* ---------------- SET 3 ---------------- */
+ [
+  { bahagian:"Vocabulary", soalan:[
+    {kind:"em", em:"⚽", teks:"What toy is this?", pilihan:["a ball","a kite","a car"], jwp:0},
+    {kind:"em", em:"🚗", teks:"What toy is this?", pilihan:["a car","a train","a bike"], jwp:0},
+    {kind:"em", em:"🚂", teks:"What toy is this?", pilihan:["a train","a plane","a car"], jwp:0},
+    {kind:"em", em:"🧸", teks:"What toy is this?", pilihan:["a doll","a ball","a kite"], jwp:0},
+    {kind:"em", em:"✈️", teks:"What toy is this?", pilihan:["a plane","a kite","a train"], jwp:0},
+  ]},
+  { bahagian:"Match the Pictures", soalan:[
+    {kind:"padan", pairs:[{gambar:"🧸",j:"doll"},{gambar:"✈️",j:"plane"},{gambar:"🚲",j:"bike"},{gambar:"🚗",j:"car"}]},
+    {kind:"padan", pairs:[{gambar:"🔺",j:"triangle"},{gambar:"🟦",j:"square"},{gambar:"🔵",j:"circle"},{gambar:"🔷",j:"diamond"}]},
+  ]},
+  { bahagian:"Make a Sentence", soalan:[
+    {kind:"susun", kata:["I","have","a","ball"]},
+    {kind:"susun", kata:["The","car","is","new"]},
+    {kind:"susun", kata:["It","is","a","kite"]},
+  ]},
+  { bahagian:"Missing Letters", soalan:[
+    {kind:"kata", kata:"k_te", em:"🪁", pilihan:["i","a","e","o"], jwp:0},
+    {kind:"kata", kata:"b_ll", em:"⚽", pilihan:["a","o","u","e"], jwp:0},
+    {kind:"kata", kata:"c_r", em:"🚗", pilihan:["a","o","u","e"], jwp:0},
+  ]},
+  { bahagian:"Fill in the Blank", soalan:[
+    {kind:"teks", teks:"This is a boy. ___ favourite toy is a car.", pilihan:["His","Her"], jwp:0},
+    {kind:"teks", teks:'The opposite of "old" is ___.', pilihan:["new","long"], jwp:0},
+    {kind:"teks", teks:'The opposite of "long" is ___.', pilihan:["short","small"], jwp:0},
+  ]},
+  { bahagian:"Build a Sentence", soalan:[
+    {kind:"susun", em:"🚗", teks:"Build a sentence about the picture:", kata:["It","is","a","car"]},
+    {kind:"susun", em:"🚂", teks:"Build a sentence about the picture:", kata:["The","train","is","long"]},
+    {kind:"susun", em:"🧸", teks:"Build a sentence about the picture:", kata:["The","doll","is","small"]},
+  ]},
+ ],
+ /* ---------------- SET 4 ---------------- */
+ [
+  { bahagian:"Vocabulary", soalan:[
+    {kind:"em", em:"🟡", teks:"What colour is this?", pilihan:["yellow","orange","purple"], jwp:0},
+    {kind:"em", em:"🟢", teks:"What colour is this?", pilihan:["green","blue","red"], jwp:0},
+    {kind:"em", em:"🔵", teks:"What colour is this?", pilihan:["blue","green","yellow"], jwp:0},
+    {kind:"em", em:"🟣", teks:"What colour is this?", pilihan:["purple","pink","grey"], jwp:0},
+    {kind:"em", em:"🟠", teks:"What colour is this?", pilihan:["orange","red","yellow"], jwp:0},
+  ]},
+  { bahagian:"Match the Pictures", soalan:[
+    {kind:"padan", pairs:[{gambar:"🟣",j:"purple"},{gambar:"🟠",j:"orange"},{gambar:"🔴",j:"red"},{gambar:"🔵",j:"blue"}]},
+    {kind:"padan", pairs:[{gambar:"🪁",j:"kite"},{gambar:"⚽",j:"ball"},{gambar:"🚗",j:"car"},{gambar:"🚂",j:"train"}]},
+  ]},
+  { bahagian:"Make a Sentence", soalan:[
+    {kind:"susun", kata:["My","bag","is","red"]},
+    {kind:"susun", kata:["The","ball","is","big"]},
+    {kind:"susun", kata:["This","is","my","pen"]},
+  ]},
+  { bahagian:"Missing Letters", soalan:[
+    {kind:"kata", kata:"f_sh", em:"🐟", pilihan:["i","a","e","o"], jwp:0},
+    {kind:"kata", kata:"b_rd", em:"🐦", pilihan:["i","a","e","o"], jwp:0},
+    {kind:"kata", kata:"c_t", em:"🐱", pilihan:["a","o","e","u"], jwp:0},
+  ]},
+  { bahagian:"Fill in the Blank", soalan:[
+    {kind:"teks", teks:"Sue is a girl. ___ name is Sue.", pilihan:["Her","His"], jwp:0},
+    {kind:"em", em:"🔺", teks:"A triangle has ___ sides.", pilihan:["3","4","5"], jwp:0},
+    {kind:"teks", teks:"After nine comes ___.", pilihan:["ten","eight"], jwp:0},
+  ]},
+  { bahagian:"Build a Sentence", soalan:[
+    {kind:"susun", em:"🔺", teks:"Build a sentence about the picture:", kata:["It","is","a","triangle"]},
+    {kind:"susun", em:"🎈", teks:"Build a sentence about the picture:", kata:["The","balloon","is","red"]},
+    {kind:"susun", em:"⚽", teks:"Build a sentence about the picture:", kata:["The","ball","is","big"]},
+  ]},
+ ],
+ /* ---------------- SET 5 ---------------- */
+ [
+  { bahagian:"Vocabulary", soalan:[
+    {kind:"em", em:"⭐⭐⭐", teks:"How many stars?", pilihan:["3","2","4"], jwp:0},
+    {kind:"em", em:"🎈🎈🎈🎈🎈", teks:"How many balloons?", pilihan:["5","6","4"], jwp:0},
+    {kind:"teks", teks:"What comes after four?", pilihan:["five","six","three"], jwp:0},
+    {kind:"em", em:"🔴", teks:"What colour is this?", pilihan:["red","blue","green"], jwp:0},
+    {kind:"em", em:"✏️", teks:"What is this?", pilihan:["a pencil","a pen","a ruler"], jwp:0},
+  ]},
+  { bahagian:"Match the Pictures", soalan:[
+    {kind:"padan", pairs:[{gambar:"🔴",j:"red"},{gambar:"🟡",j:"yellow"},{gambar:"🟢",j:"green"},{gambar:"🔵",j:"blue"}]},
+    {kind:"padan", pairs:[{gambar:"✏️",j:"pencil"},{gambar:"🖊️",j:"pen"},{gambar:"📕",j:"book"},{gambar:"🎒",j:"bag"}]},
+  ]},
+  { bahagian:"Make a Sentence", soalan:[
+    {kind:"susun", kata:["I","can","sing"]},
+    {kind:"susun", kata:["Her","name","is","Sue"]},
+    {kind:"susun", kata:["I","like","cats"]},
+  ]},
+  { bahagian:"Missing Letters", soalan:[
+    {kind:"kata", kata:"c_r", em:"🚗", pilihan:["a","o","u","e"], jwp:0},
+    {kind:"kata", kata:"d_ll", em:"🧸", pilihan:["o","a","u","e"], jwp:0},
+    {kind:"kata", kata:"p_n", em:"🖊️", pilihan:["e","a","i","o"], jwp:0},
+  ]},
+  { bahagian:"Fill in the Blank", soalan:[
+    {kind:"teks", teks:"Ben is seven. ___ is happy.", pilihan:["He","She"], jwp:0},
+    {kind:"teks", teks:"When you go home, say ___.", pilihan:["Goodbye","Hello"], jwp:0},
+    {kind:"teks", teks:'The opposite of "beautiful" is ___.', pilihan:["ugly","new"], jwp:0},
+  ]},
+  { bahagian:"Build a Sentence", soalan:[
+    {kind:"susun", em:"🪁", teks:"Build a sentence about the picture:", kata:["I","have","a","kite"]},
+    {kind:"susun", em:"🚗", teks:"Build a sentence about the picture:", kata:["It","is","a","car"]},
+    {kind:"susun", em:"🖊️", teks:"Build a sentence about the picture:", kata:["I","have","a","pen"]},
+  ]},
+ ],
+ /* ---------------- SET 6 ---------------- */
+ [
+  { bahagian:"Vocabulary", soalan:[
+    {kind:"em", em:"📕", teks:"What is this?", pilihan:["a book","a bag","a pen"], jwp:0},
+    {kind:"em", em:"🎒", teks:"What is this?", pilihan:["a bag","a book","a ruler"], jwp:0},
+    {kind:"em", em:"🪁", teks:"What toy is this?", pilihan:["a kite","a ball","a car"], jwp:0},
+    {kind:"em", em:"🚲", teks:"What toy is this?", pilihan:["a bike","a car","a train"], jwp:0},
+    {kind:"em", em:"🟦", teks:"What shape is this?", pilihan:["a square","a circle","a triangle"], jwp:0},
+  ]},
+  { bahagian:"Match the Pictures", soalan:[
+    {kind:"padan", pairs:[{gambar:"✏️",j:"pencil"},{gambar:"📏",j:"ruler"},{gambar:"📒",j:"notebook"},{gambar:"🎒",j:"bag"}]},
+    {kind:"padan", pairs:[{gambar:"🔺",j:"triangle"},{gambar:"🟦",j:"square"},{gambar:"🔵",j:"circle"},{gambar:"🔷",j:"diamond"}]},
+  ]},
+  { bahagian:"Make a Sentence", soalan:[
+    {kind:"susun", kata:["This","is","my","bag"]},
+    {kind:"susun", kata:["The","car","is","new"]},
+    {kind:"susun", kata:["He","is","seven"]},
+  ]},
+  { bahagian:"Missing Letters", soalan:[
+    {kind:"kata", kata:"b_g", em:"🎒", pilihan:["a","o","u","e"], jwp:0},
+    {kind:"kata", kata:"k_te", em:"🪁", pilihan:["i","a","e","o"], jwp:0},
+    {kind:"kata", kata:"b_ll", em:"⚽", pilihan:["a","o","u","e"], jwp:0},
+  ]},
+  { bahagian:"Fill in the Blank", soalan:[
+    {kind:"teks", teks:"This is a boy. ___ favourite toy is a car.", pilihan:["His","Her"], jwp:0},
+    {kind:"teks", teks:"After four comes ___.", pilihan:["five","six"], jwp:0},
+    {kind:"em", em:"✏️", teks:"Is it a pen? No, ___.", pilihan:["it isn't","it is"], jwp:0},
+  ]},
+  { bahagian:"Build a Sentence", soalan:[
+    {kind:"susun", em:"🎒", teks:"Build a sentence about the picture:", kata:["My","bag","is","red"]},
+    {kind:"susun", em:"✏️", teks:"Build a sentence about the picture:", kata:["This","is","my","pencil"]},
+    {kind:"susun", em:"⚽", teks:"Build a sentence about the picture:", kata:["The","ball","is","big"]},
+  ]},
+ ],
+ /* ---------------- SET 7 ---------------- */
+ [
+  { bahagian:"Vocabulary", soalan:[
+    {kind:"em", em:"🧸", teks:"What toy is this?", pilihan:["a doll","a ball","a kite"], jwp:0},
+    {kind:"em", em:"✈️", teks:"What toy is this?", pilihan:["a plane","a kite","a train"], jwp:0},
+    {kind:"em", em:"🔷", teks:"What shape is this?", pilihan:["a diamond","a circle","a triangle"], jwp:0},
+    {kind:"em", em:"🟢", teks:"What colour is this?", pilihan:["green","blue","red"], jwp:0},
+    {kind:"teks", teks:'Which number is "seven"?', pilihan:["7","9","5"], jwp:0},
+  ]},
+  { bahagian:"Match the Pictures", soalan:[
+    {kind:"padan", pairs:[{gambar:"🧸",j:"doll"},{gambar:"✈️",j:"plane"},{gambar:"🚲",j:"bike"},{gambar:"🚗",j:"car"}]},
+    {kind:"padan", pairs:[{gambar:"🟣",j:"purple"},{gambar:"🟠",j:"orange"},{gambar:"🔴",j:"red"},{gambar:"🔵",j:"blue"}]},
+  ]},
+  { bahagian:"Make a Sentence", soalan:[
+    {kind:"susun", kata:["I","have","a","kite"]},
+    {kind:"susun", kata:["My","pen","is","blue"]},
+    {kind:"susun", kata:["It","is","a","kite"]},
+  ]},
+  { bahagian:"Missing Letters", soalan:[
+    {kind:"kata", kata:"c_t", em:"🐱", pilihan:["a","o","e","u"], jwp:0},
+    {kind:"kata", kata:"f_sh", em:"🐟", pilihan:["i","a","e","o"], jwp:0},
+    {kind:"kata", kata:"b_rd", em:"🐦", pilihan:["i","a","e","o"], jwp:0},
+  ]},
+  { bahagian:"Fill in the Blank", soalan:[
+    {kind:"teks", teks:"This is a girl. ___ favourite toy is a doll.", pilihan:["Her","His"], jwp:0},
+    {kind:"teks", teks:'The opposite of "big" is ___.', pilihan:["small","tall"], jwp:0},
+    {kind:"teks", teks:"When you meet a friend, say ___.", pilihan:["Hello","Goodbye"], jwp:0},
+  ]},
+  { bahagian:"Build a Sentence", soalan:[
+    {kind:"susun", em:"🧸", teks:"Build a sentence about the picture:", kata:["The","doll","is","small"]},
+    {kind:"susun", em:"🚂", teks:"Build a sentence about the picture:", kata:["The","train","is","long"]},
+    {kind:"susun", em:"🎈", teks:"Build a sentence about the picture:", kata:["The","balloon","is","red"]},
+  ]},
+ ],
+ /* ---------------- SET 8 ---------------- */
+ [
+  { bahagian:"Vocabulary", soalan:[
+    {kind:"em", em:"🔺", teks:"What shape is this?", pilihan:["a triangle","a square","a circle"], jwp:0},
+    {kind:"em", em:"🟦", teks:"What shape is this?", pilihan:["a square","a circle","a triangle"], jwp:0},
+    {kind:"em", em:"🔵", teks:"What shape is this?", pilihan:["a circle","a square","a diamond"], jwp:0},
+    {kind:"em", em:"🔷", teks:"What shape is this?", pilihan:["a diamond","a circle","a triangle"], jwp:0},
+    {kind:"em", em:"📏", teks:"What is this?", pilihan:["a ruler","a pencil","a bag"], jwp:0},
+  ]},
+  { bahagian:"Match the Pictures", soalan:[
+    {kind:"padan", pairs:[{gambar:"🔺",j:"triangle"},{gambar:"🟦",j:"square"},{gambar:"🔵",j:"circle"},{gambar:"🔷",j:"diamond"}]},
+    {kind:"padan", pairs:[{gambar:"✏️",j:"pencil"},{gambar:"🖊️",j:"pen"},{gambar:"📕",j:"book"},{gambar:"🎒",j:"bag"}]},
+  ]},
+  { bahagian:"Make a Sentence", soalan:[
+    {kind:"susun", kata:["My","bag","is","red"]},
+    {kind:"susun", kata:["I","like","cats"]},
+    {kind:"susun", kata:["He","is","seven"]},
+  ]},
+  { bahagian:"Missing Letters", soalan:[
+    {kind:"kata", kata:"p_n", em:"🖊️", pilihan:["e","a","i","o"], jwp:0},
+    {kind:"kata", kata:"b_g", em:"🎒", pilihan:["a","o","u","e"], jwp:0},
+    {kind:"kata", kata:"c_r", em:"🚗", pilihan:["a","o","u","e"], jwp:0},
+  ]},
+  { bahagian:"Fill in the Blank", soalan:[
+    {kind:"teks", teks:"I have a pen ___ a book.", pilihan:["and","is"], jwp:0},
+    {kind:"teks", teks:'The opposite of "long" is ___.', pilihan:["short","small"], jwp:0},
+    {kind:"teks", teks:'"Put away your book." You should ___.', pilihan:["keep the book","eat the book"], jwp:0},
+  ]},
+  { bahagian:"Build a Sentence", soalan:[
+    {kind:"susun", em:"🔺", teks:"Build a sentence about the picture:", kata:["It","is","a","triangle"]},
+    {kind:"susun", em:"🖊️", teks:"Build a sentence about the picture:", kata:["I","have","a","pen"]},
+    {kind:"susun", em:"🚗", teks:"Build a sentence about the picture:", kata:["It","is","a","car"]},
+  ]},
+ ],
+ /* ---------------- SET 9 ---------------- */
+ [
+  { bahagian:"Vocabulary", soalan:[
+    {kind:"em", em:"🪁", teks:"What toy is this?", pilihan:["a kite","a ball","a car"], jwp:0},
+    {kind:"em", em:"⚽", teks:"What toy is this?", pilihan:["a ball","a kite","a car"], jwp:0},
+    {kind:"em", em:"🚗", teks:"What toy is this?", pilihan:["a car","a train","a bike"], jwp:0},
+    {kind:"em", em:"🎈🎈🎈🎈🎈🎈", teks:"How many balloons?", pilihan:["6","7","5"], jwp:0},
+    {kind:"em", em:"🔴", teks:"What colour is this?", pilihan:["red","blue","green"], jwp:0},
+  ]},
+  { bahagian:"Match the Pictures", soalan:[
+    {kind:"padan", pairs:[{gambar:"🪁",j:"kite"},{gambar:"⚽",j:"ball"},{gambar:"🚗",j:"car"},{gambar:"🚂",j:"train"}]},
+    {kind:"padan", pairs:[{gambar:"🔴",j:"red"},{gambar:"🟡",j:"yellow"},{gambar:"🟢",j:"green"},{gambar:"🔵",j:"blue"}]},
+  ]},
+  { bahagian:"Make a Sentence", soalan:[
+    {kind:"susun", kata:["His","name","is","Ben"]},
+    {kind:"susun", kata:["The","ball","is","big"]},
+    {kind:"susun", kata:["I","can","sing"]},
+  ]},
+  { bahagian:"Missing Letters", soalan:[
+    {kind:"kata", kata:"k_te", em:"🪁", pilihan:["i","a","e","o"], jwp:0},
+    {kind:"kata", kata:"d_ll", em:"🧸", pilihan:["o","a","u","e"], jwp:0},
+    {kind:"kata", kata:"b_ll", em:"⚽", pilihan:["a","o","u","e"], jwp:0},
+  ]},
+  { bahagian:"Fill in the Blank", soalan:[
+    {kind:"teks", teks:"Ben is a boy. ___ is happy.", pilihan:["He","She"], jwp:0},
+    {kind:"teks", teks:'The opposite of "old" is ___.', pilihan:["new","long"], jwp:0},
+    {kind:"em", em:"🖊️", teks:"Is it a pen? Yes, ___.", pilihan:["it is","it isn't"], jwp:0},
+  ]},
+  { bahagian:"Build a Sentence", soalan:[
+    {kind:"susun", em:"🪁", teks:"Build a sentence about the picture:", kata:["I","have","a","kite"]},
+    {kind:"susun", em:"🚗", teks:"Build a sentence about the picture:", kata:["It","is","a","car"]},
+    {kind:"susun", em:"🎒", teks:"Build a sentence about the picture:", kata:["My","bag","is","red"]},
+  ]},
+ ],
+ /* ---------------- SET 10 ---------------- */
+ [
+  { bahagian:"Vocabulary", soalan:[
+    {kind:"em", em:"✏️", teks:"What is this?", pilihan:["a pencil","a pen","a book"], jwp:0},
+    {kind:"em", em:"🖊️", teks:"What is this?", pilihan:["a pen","a ruler","a desk"], jwp:0},
+    {kind:"em", em:"🪁", teks:"What toy is this?", pilihan:["a kite","a ball","a car"], jwp:0},
+    {kind:"em", em:"🟣", teks:"What colour is this?", pilihan:["purple","pink","grey"], jwp:0},
+    {kind:"em", em:"🔺", teks:"What shape is this?", pilihan:["a triangle","a square","a circle"], jwp:0},
+  ]},
+  { bahagian:"Match the Pictures", soalan:[
+    {kind:"padan", pairs:[{gambar:"✏️",j:"pencil"},{gambar:"📏",j:"ruler"},{gambar:"📒",j:"notebook"},{gambar:"🎒",j:"bag"}]},
+    {kind:"padan", pairs:[{gambar:"🧸",j:"doll"},{gambar:"✈️",j:"plane"},{gambar:"🚲",j:"bike"},{gambar:"🚗",j:"car"}]},
+  ]},
+  { bahagian:"Make a Sentence", soalan:[
+    {kind:"susun", kata:["This","is","my","pen"]},
+    {kind:"susun", kata:["The","car","is","new"]},
+    {kind:"susun", kata:["I","have","a","ball"]},
+  ]},
+  { bahagian:"Missing Letters", soalan:[
+    {kind:"kata", kata:"c_t", em:"🐱", pilihan:["a","o","e","u"], jwp:0},
+    {kind:"kata", kata:"p_n", em:"🖊️", pilihan:["e","a","i","o"], jwp:0},
+    {kind:"kata", kata:"k_te", em:"🪁", pilihan:["i","a","e","o"], jwp:0},
+  ]},
+  { bahagian:"Fill in the Blank", soalan:[
+    {kind:"teks", teks:"Sue is a girl. ___ name is Sue.", pilihan:["Her","His"], jwp:0},
+    {kind:"teks", teks:"When someone helps you, say ___.", pilihan:["Thank you","Sorry"], jwp:0},
+    {kind:"teks", teks:"After nine comes ___.", pilihan:["ten","eight"], jwp:0},
+  ]},
+  { bahagian:"Build a Sentence", soalan:[
+    {kind:"susun", em:"🖊️", teks:"Build a sentence about the picture:", kata:["I","have","a","pen"]},
+    {kind:"susun", em:"🔺", teks:"Build a sentence about the picture:", kata:["It","is","a","triangle"]},
+    {kind:"susun", em:"🚂", teks:"Build a sentence about the picture:", kata:["The","train","is","long"]},
+  ]},
+ ],
+];
+let modulSetTerakhir=-1;
+
+/* ============ utilities ============ */
+const $=id=>document.getElementById(id);
+const semua=DATA.flatMap(t=>t.units.flatMap(u=>u.latihan));
+const cariLatihan=id=>semua.find(l=>l.id===id);
+
+/* best-score storage (safe if it fails) */
+function muatRekod(){try{return JSON.parse(localStorage.getItem('bi_t1_rekod')||'{}')}catch(e){return{}}}
+function simpanRekod(r){try{localStorage.setItem('bi_t1_rekod',JSON.stringify(r))}catch(e){}}
+let rekod=muatRekod();
+
+/* sound (WebAudio, no external files) */
+let bunyiOn=true;
+try{bunyiOn=localStorage.getItem('bi_t1_bunyi')!=='off'}catch(e){}
+let ac=null;
+function nada(freqs,dur=0.12){
+  if(!bunyiOn)return;
+  try{
+    ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+    let t=ac.currentTime;
+    freqs.forEach((f,i)=>{
+      const o=ac.createOscillator(),g=ac.createGain();
+      o.type='sine';o.frequency.value=f;
+      o.connect(g);g.connect(ac.destination);
+      g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.25,t+0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.start(t);o.stop(t+dur);t+=dur;
+    });
+  }catch(e){}
+}
+const bunyiBetul=()=>nada([660,880,1175]);
+const bunyiSalah=()=>nada([300,200],0.18);
+/* long fanfare for full marks */
+function fanfare(){ nada([523,659,784,1047, 784,1047, 880,1175, 988,1319, 1047,1568], 0.14); }
+
+/* ============ screen navigation ============ */
+function tunjuk(idSkrin){
+  document.querySelectorAll('.skrin').forEach(s=>s.classList.remove('aktif'));
+  $(idSkrin).classList.add('aktif');
+  window.scrollTo(0,0);
+}
+function keMula(){ multiOff(); tunjuk('skrinMula'); }
+function bukaPilih(){ binaSenarai(); tunjuk('skrinPilih'); }
+
+/* ============ choose screen ============ */
+let modMulti=false;
+let pilihan=new Set();
+
+function binaSenarai(){
+  const wrap=$('senaraiTema'); wrap.innerHTML='';
+  DATA.forEach((t,ti)=>{
+    const tema=document.createElement('div');
+    tema.className='tema'+(ti===0?' buka':'');
+    const bilLatih=t.units.reduce((a,u)=>a+u.latihan.length,0);
+    tema.innerHTML=`
+      <div class="tema-tajuk" onclick="this.parentNode.classList.toggle('buka')">
+        <span class="em">${t.emoji}</span>
+        <span class="nm"><b>${t.nama}</b><small>${bilLatih} exercises</small></span>
+        <span class="chev">▶</span>
+      </div>
+      <div class="tema-isi"></div>`;
+    const isi=tema.querySelector('.tema-isi');
+    t.units.forEach(u=>{
+      const un=document.createElement('div');
+      un.className='unit-nama'; un.textContent=u.nama; isi.appendChild(un);
+      u.latihan.forEach(l=>{
+        const best=rekod[l.id];
+        const jejak=best!=null?`<span class="jejak">⭐ Best: ${best}/${l.soalan.length}</span>`:'';
+        const row=document.createElement('div');
+        row.className='latih'; row.dataset.id=l.id;
+        row.innerHTML=`
+          <div class="ik">${l.ikon}</div>
+          <div class="info"><b>${l.tajuk}</b><small>${l.soalan.length} questions ${jejak}</small></div>
+          <button class="main" onclick="event.stopPropagation();mulaLatihanTunggal('${l.id}')">Play</button>
+          <div class="tik">✓</div>`;
+        row.onclick=()=>{ if(modMulti) togolPilih(l.id,row); };
+        isi.appendChild(row);
+      });
+    });
+    wrap.appendChild(tema);
+  });
+}
+
+function togolMulti(){ modMulti?multiOff():multiOn(); }
+function multiOn(){
+  modMulti=true; document.body.classList.add('multi');
+  $('togolMulti').textContent='✖️ Cancel';
+  kemasBarBawah();
+}
+function multiOff(){
+  modMulti=false; pilihan.clear(); document.body.classList.remove('multi');
+  const t=$('togolMulti'); if(t)t.textContent='➕ Pick Many';
+  document.querySelectorAll('.latih.pilih').forEach(r=>r.classList.remove('pilih'));
+  kemasBarBawah();
+}
+function togolPilih(id,row){
+  if(pilihan.has(id)){pilihan.delete(id);row.classList.remove('pilih');}
+  else{pilihan.add(id);row.classList.add('pilih');}
+  kemasBarBawah();
+}
+function kemasBarBawah(){
+  $('bilPilih').textContent=pilihan.size;
+  $('barBawah').classList.toggle('ada',pilihan.size>0);
+}
+
+/* ============ start an exercise ============ */
+let sesi=null; // {soal:[], idx, betul, dijwp:false, meta}
+
+function mulaLatihanTunggal(id){
+  const l=cariLatihan(id);
+  mulaSesi(l.soalan.map(s=>({...s,arahan:s.arahan||l.arahan,petikan:l.petikan})),
+           {tajuk:l.tajuk, sumber:[id]});
+}
+function mulaPilihan(){
+  if(pilihan.size===0)return;
+  let soal=[];
+  semua.forEach(l=>{ if(pilihan.has(l.id))
+    l.soalan.forEach(s=>soal.push({...s,arahan:s.arahan||l.arahan,petikan:l.petikan})); });
+  mulaSesi(soal,{tajuk:'Selected Exercises', sumber:[...pilihan]});
+}
+function latihanPantas(){
+  // one random question from every exercise, shuffle, take 10
+  let kolam=[];
+  semua.forEach(l=>l.soalan.forEach(s=>kolam.push({...s,arahan:s.arahan||l.arahan,petikan:l.petikan})));
+  kolam=kacau(kolam).slice(0,10);
+  mulaSesi(kolam,{tajuk:'Quick Practice', sumber:null});
+}
+function kacau(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function mulaSesi(soal, meta, opsi){
+  if(!soal||!soal.length)return;
+  const acak = !(opsi && opsi.acak===false);   // revision keeps order
+  let list = acak ? kacau(soal) : soal.slice();
+  list = list.map(s=>{
+    if(!s.pilihan) return {...s};               // match / arrange: no options
+    const ki=kacau(s.pilihan.map((_,i)=>i));
+    return {...s, pilihan:ki.map(i=>s.pilihan[i]), jwp:ki.indexOf(s.jwp)};
+  });
+  sesi={soal:list, idx:0, betul:0, dijwp:false, meta};
+  tunjuk('skrinLatihan');
+  renderSoalan();
+}
+
+function mulaModul(){
+  let idx=Math.random()*MODUL_SETS.length|0;
+  if(MODUL_SETS.length>1 && idx===modulSetTerakhir) idx=(idx+1)%MODUL_SETS.length;
+  modulSetTerakhir=idx;
+  const noSet=idx+1, set=MODUL_SETS[idx];
+  let soal=[];
+  set.forEach((b,bi)=> b.soalan.forEach(s=> soal.push({...s, arahan:'Set '+noSet+'/'+MODUL_SETS.length+' · Part '+(bi+1)+' · '+b.bahagian})));
+  mulaSesi(soal, {tajuk:'Step-by-Step Revision', modul:true, set:noSet}, {acak:false});
+}
+
+const UCAP_OK=['Great! 🎉','Awesome! 🌟','Well done! 👏','Correct! ✅','Excellent! 💯','Nice! 🦋'];
+const UCAP_NO=['Try again!','Keep going!','Almost!','Don\'t give up!'];
+
+function renderSoalan(){
+  sesi.dijwp=false;
+  const s=sesi.soal[sesi.idx];
+  $('arahan').textContent=s.arahan||'Choose the correct answer';
+  $('petikanKotak').innerHTML = s.petikan ? `<div class="petikan">📖 ${s.petikan}</div>` : '';
+
+  const box=$('pilihan'); box.innerHTML=''; box.className='pilihan';
+
+  if(s.kind==='padan'){ $('paparan').innerHTML=''; renderPadan(s); }
+  else if(s.kind==='susun'){ $('paparan').innerHTML=''; renderSusun(s); }
+  else {
+    // display (emoji / word + blank / text)
+    let p='';
+    if(s.kind==='kata'){
+      const html=s.kata.replace('_','<span class="kosong">?</span>');
+      p=`${s.em?`<div class="papar-em">${s.em}</div>`:''}<div class="papar-kata">${html}</div>`;
+      if(s.teks)p+=`<div class="soalan-teks" style="font-size:20px">${s.teks}</div>`;
+    }else if(s.kind==='em'){
+      p=`<div class="papar-em">${s.em}</div><div class="soalan-teks">${s.teks}</div>`;
+    }else{
+      p=`<div class="soalan-teks">${s.teks}</div>`;
+    }
+    $('paparan').innerHTML=p;
+    // MCQ options
+    const panjang=s.pilihan.some(x=>(''+x).length>6 || /\s/.test(x));
+    box.className='pilihan'+(panjang?' satu-lajur':'');
+    s.pilihan.forEach((opt,i)=>{
+      const b=document.createElement('button');
+      b.className='opsi'; b.type='button'; b.textContent=opt;
+      b.onclick=()=>jawab(i,b);
+      box.appendChild(b);
+    });
+  }
+
+  // reset feedback
+  const m=$('mesej'); m.className='mesej';
+  m.querySelector('.kata.suka').textContent='';
+  m.querySelector('.kata.sedih').textContent='';
+
+  // progress + stars
+  $('progresBar').style.width=(sesi.idx/sesi.soal.length*100)+'%';
+  $('kiraBintang').textContent=sesi.betul;
+}
+
+/* result shared by all question kinds */
+function tunjukKeputusan(ok, infoSalah){
+  sesi.dijwp=true;
+  const m=$('mesej');
+  if(ok){
+    sesi.betul++; $('kiraBintang').textContent=sesi.betul;
+    m.classList.add('ok');
+    m.querySelector('.kata.suka').textContent=UCAP_OK[Math.random()*UCAP_OK.length|0];
+    bunyiBetul();
+  }else{
+    m.classList.add('no');
+    m.querySelector('.kata.sedih').textContent=UCAP_NO[Math.random()*UCAP_NO.length|0]+(infoSalah?'  '+infoSalah:'');
+    bunyiSalah();
+  }
+  $('btnSeterus').textContent = (sesi.idx+1>=sesi.soal.length) ? 'Finish 🎊' : 'Next ➡️';
+}
+
+function jawab(i,btn){
+  if(sesi.dijwp)return;
+  const s=sesi.soal[sesi.idx];
+  [...$('pilihan').children].forEach(o=>o.disabled=true);
+  if(i===s.jwp){ btn.classList.add('betul'); tunjukKeputusan(true); }
+  else{
+    btn.classList.add('salah');
+    $('pilihan').children[s.jwp].classList.add('kunci');
+    tunjukKeputusan(false,'Answer: '+s.pilihan[s.jwp]);
+  }
+}
+
+/* ---------- PART 2: Match the pictures ---------- */
+function renderPadan(s){
+  sesi.padanKiri=null; sesi.padanSiap=0;
+  const kiri=s.pairs.map((p,i)=>({...p,i}));
+  const kanan=kacau(s.pairs.map((p,i)=>({label:p.j, i})));
+  let h=`<div class="padan-arahan">Tap a picture, then tap the matching word.</div>`;
+  h+=`<div class="padan-grid"><div class="padan-col" id="padanKiri"></div><div class="padan-col" id="padanKanan"></div></div>`;
+  $('paparan').innerHTML=h;
+  const kiriBox=$('padanKiri'), kananBox=$('padanKanan');
+  kiri.forEach(o=>{
+    const b=document.createElement('button'); b.className='padan-item'; b.dataset.i=o.i;
+    b.innerHTML = o.gambar ? `<span class="padan-em">${o.gambar}</span>` : o.k;
+    b.onclick=()=>tapKiri(b); kiriBox.appendChild(b);
+  });
+  kanan.forEach(o=>{
+    const b=document.createElement('button'); b.className='padan-item padan-teks'; b.dataset.i=o.i;
+    b.textContent=o.label; b.onclick=()=>tapKanan(b); kananBox.appendChild(b);
+  });
+}
+function tapKiri(b){
+  if(sesi.dijwp || b.classList.contains('lock'))return;
+  document.querySelectorAll('#padanKiri .padan-item').forEach(x=>x.classList.remove('pilih'));
+  sesi.padanKiri=b; b.classList.add('pilih');
+}
+function tapKanan(b){
+  if(sesi.dijwp || b.classList.contains('lock'))return;
+  if(!sesi.padanKiri){ b.classList.add('goyang'); setTimeout(()=>b.classList.remove('goyang'),400); return; }
+  const kiri=sesi.padanKiri;
+  if(kiri.dataset.i===b.dataset.i){
+    kiri.classList.remove('pilih'); kiri.classList.add('lock'); b.classList.add('lock');
+    sesi.padanKiri=null; sesi.padanSiap++; nada([700,950]);
+    if(sesi.padanSiap===sesi.soal[sesi.idx].pairs.length) tunjukKeputusan(true);
+  }else{
+    b.classList.add('silap'); kiri.classList.add('silap'); bunyiSalah();
+    const k=kiri; setTimeout(()=>{k.classList.remove('silap','pilih'); b.classList.remove('silap');},500);
+    sesi.padanKiri=null;
+  }
+}
+
+/* ---------- PARTS 3 & 6: Make / Build a sentence ---------- */
+function renderSusun(s){
+  sesi.susunPilih=[];
+  const acak=kacau(s.kata.map((w,i)=>({w,i})));
+  let h='';
+  if(s.em) h+=`<div class="papar-em">${s.em}</div>`;
+  if(s.teks) h+=`<div class="soalan-teks" style="font-size:19px">${s.teks}</div>`;
+  h+=`<div class="susun-jwp" id="susunJwp"><span class="susun-hint">Tap the words below in order…</span></div>`;
+  h+=`<div class="susun-bank" id="susunBank"></div>`;
+  h+=`<div id="susunNota" class="susun-nota"></div>`;
+  h+=`<button class="btn btn-amber susun-semak" id="susunSemak" onclick="semakSusun()">✅ Check Sentence</button>`;
+  $('paparan').innerHTML=h;
+  const bank=$('susunBank');
+  acak.forEach((o,k)=>{
+    const b=document.createElement('button'); b.className='tile'; b.textContent=o.w;
+    b.onclick=()=>pilihTile(b,o.w); bank.appendChild(b);
+  });
+}
+function pilihTile(b,word){
+  if(sesi.dijwp || b.classList.contains('guna'))return;
+  b.classList.add('guna');
+  const jwp=$('susunJwp'); const hint=jwp.querySelector('.susun-hint'); if(hint)hint.remove();
+  const t=document.createElement('button'); t.className='tile tile-jwp'; t.textContent=word;
+  const entri={word,b,t};
+  t.onclick=()=>{
+    if(sesi.dijwp)return;
+    t.remove(); b.classList.remove('guna');
+    sesi.susunPilih=sesi.susunPilih.filter(x=>x!==entri);
+    if(!jwp.children.length)jwp.innerHTML='<span class="susun-hint">Tap the words below in order…</span>';
+  };
+  jwp.appendChild(t); sesi.susunPilih.push(entri);
+}
+function semakSusun(){
+  if(sesi.dijwp)return;
+  const s=sesi.soal[sesi.idx];
+  if(sesi.susunPilih.length<s.kata.length){
+    const n=$('susunNota'); n.textContent='Tap all the words first! 😊';
+    n.classList.add('lihat'); setTimeout(()=>n.classList.remove('lihat'),1600);
+    return;
+  }
+  const jwp=sesi.susunPilih.map(x=>x.word).join(' ');
+  $('susunSemak').disabled=true;
+  if(jwp===s.kata.join(' ')){ $('susunJwp').classList.add('betul'); tunjukKeputusan(true); }
+  else{ $('susunJwp').classList.add('salah'); tunjukKeputusan(false,'Correct sentence: '+s.kata.join(' ')); }
+}
+
+function soalanSeterus(){
+  sesi.idx++;
+  if(sesi.idx>=sesi.soal.length){ tamatSesi(); return; }
+  renderSoalan();
+}
+
+function tamatSesi(){
+  $('progresBar').style.width='100%';
+  const jum=sesi.soal.length, betul=sesi.betul;
+  const peratus=betul/jum;
+  $('skorBetul').textContent=betul;
+  $('skorJumlah').textContent=jum;
+
+  // stars 1-3
+  let b=1; if(peratus>=0.6)b=2; if(peratus>=0.9)b=3;
+  $('bintangBaris').textContent='⭐'.repeat(b)+'☆'.repeat(3-b);
+
+  let raut='🌟',tajuk='Well done!',ucap='';
+  if(betul===jum){raut='🏆';tajuk='Full Marks!';ucap='Perfect! All answers are correct! 🎉';}
+  else if(peratus>=0.9){raut='🏅';tajuk='Excellent!';ucap='Great job! Almost all correct!';}
+  else if(peratus>=0.6){raut='🌟';tajuk='Good!';ucap='Good! Keep practising!';}
+  else{raut='🌱';tajuk='Let\'s Try Again!';ucap='That\'s OK — practice makes perfect!';}
+  $('rautTamat').textContent=raut; $('tajukTamat').textContent=tajuk; $('ucapTamat').textContent=ucap;
+
+  // save & show best score (single exercise or revision)
+  let rekodBaharu=false, terbaik=null, skop=null;
+  if(sesi.meta && sesi.meta.modul){
+    skop='Revision';
+    if(rekod['__modul__']==null || betul>rekod['__modul__']){ rekod['__modul__']=betul; simpanRekod(rekod); rekodBaharu=true; }
+    terbaik=rekod['__modul__'];
+  }else if(sesi.meta && sesi.meta.sumber && sesi.meta.sumber.length===1){
+    const id=sesi.meta.sumber[0]; skop='this exercise';
+    if(rekod[id]==null || betul>rekod[id]){ rekod[id]=betul; simpanRekod(rekod); rekodBaharu=true; }
+    terbaik=rekod[id];
+  }
+  const elBest=$('hasilTerbaik');
+  if(terbaik!=null && skop){
+    elBest.innerHTML='🏅 Best score ('+skop+'): '+terbaik+'/'+jum + (rekodBaharu?'<span class="baharu">New record! 🎉</span>':'');
+    elBest.style.display='inline-block';
+  }else{ elBest.style.display='none'; }
+
+  if(betul===jum) setTimeout(fanfare,180);
+  else if(peratus>=0.9) setTimeout(()=>nada([784,988,1175,1568],0.13),150);
+  tunjuk('skrinTamat');
+}
+
+function ulangLatihan(){
+  const meta=sesi.meta;
+  if(meta.modul){ mulaModul(); return; }
+  if(meta.sumber===null){ latihanPantas(); return; }
+  let soal=[];
+  meta.sumber.forEach(id=>{ const l=cariLatihan(id);
+    l.soalan.forEach(s=>soal.push({...s,arahan:s.arahan||l.arahan,petikan:l.petikan})); });
+  mulaSesi(soal,meta);
+}
+
+function tanyaBerhenti(){
+  if(sesi && sesi.idx>0 && sesi.idx<sesi.soal.length){
+    if(!confirm('Stop this exercise?'))return;
+  }
+  if(modMulti){ tunjuk('skrinPilih'); } else { keMula(); }
+}
+
+/* ============ sound settings ============ */
+function kemasBunyiUI(){
+  const m=$('togolBunyi'); if(m)m.textContent=bunyiOn?'🔊 Sound: On':'🔇 Sound: Off';
+  const l=$('btnBunyiLatih'); if(l)l.textContent=bunyiOn?'🔊':'🔇';
+}
+function togolBunyi(){
+  bunyiOn=!bunyiOn;
+  try{localStorage.setItem('bi_t1_bunyi',bunyiOn?'on':'off')}catch(e){}
+  kemasBunyiUI();
+  if(bunyiOn)bunyiBetul();
+}
+kemasBunyiUI();
+
+// reduce rubber-band overscroll but allow normal scrolling
+document.addEventListener('gesturestart',e=>e.preventDefault());
+</script>
+</body>
+</html>
